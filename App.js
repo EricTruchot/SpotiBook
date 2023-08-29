@@ -1,27 +1,17 @@
-import * as React from 'react';
-import { Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
+import HomeScreen from "./src/app";
+import MapPage from "./src/app/map";
+import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MapPage from './App/Map/MapPage';
-
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Home!</Text>
-    </View>
-  );
-}
-
-
-const Tab = createBottomTabNavigator();
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="MapPage" component={MapPage} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+    const Tab = createBottomTabNavigator();
+
+    return (
+        <NavigationContainer>
+            <Tab.Navigator>
+                <Tab.Screen name="Home" component = { HomeScreen } />
+                <Tab.Screen name="Map" component = { MapPage } />
+            </Tab.Navigator>
+        </NavigationContainer>
+    )
 }
