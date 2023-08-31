@@ -3,22 +3,49 @@ import AccueilUnregistered from "./src/app/accueil/AccueilUnregistered";
 import Map from "./src/app/map/MapPage";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import AccueilRegistered from "./src/app/accueil/AccueilRegistered";
+import ShowBoite from './src/app/boite/ShowBoite';
+
+
 
 export default function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [boxInfos, setBoxInfos] = useState({});
+  
+  function Home() {
     const Tab = createBottomTabNavigator();
-
-    console.log("isLoggedin :D == ", isLoggedIn);
     return (
-        <NavigationContainer>
-            <Tab.Navigator>
+      <Tab.Navigator>
+            { isLoggedIn ? (
+              <Tab.Screen name="AccueilRegistered">
+                {() => <AccueilRegistered setBoxInfos={ setBoxInfos } />}
+              </Tab.Screen>
+            ) : (
                 <Tab.Screen name="Accueil">
-                    {() => <AccueilUnregistered loggedIn={ isLoggedIn } setLoggedIn={ setIsLoggedIn } />}
+                    {() => <AccueilUnregistered setLoggedIn={ setIsLoggedIn } />}
                 </Tab.Screen>
-                <Tab.Screen name="AccueilRegistered" component={ AccueilRegistered } />
-                <Tab.Screen name="Carte" component={ Map } />
-            </Tab.Navigator>
-        </NavigationContainer>
-    )
-}
+            )}
+            <Tab.Screen name="Carte" component={ Map } />
+      </Tab.Navigator>
+    );
+  }
+    const Stack = createStackNavigator();
+
+    return (
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen
+            name="Home"
+            component={ Home }
+            options={{ headerShown: false }}
+          />
+            {/* <Stack.Screen name="Boites" component={ ShowBoite } /> */}
+
+            <Stack.Screen name="Boites">
+                {() => <ShowBoite boxInfos={ boxInfos } />}
+              </Stack.Screen>
+        </Stack.Navigator>
+      </NavigationContainer>
+    );
+  }
