@@ -1,26 +1,40 @@
-import * as React from 'react';
-import { Text, View, Button } from 'react-native';
-import { StyleSheet } from "react-native";
+import React, { useState, useEffect } from 'react';
+import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
+import { getAllBooksFromIdBox } from '../services/api';
 
-export default function ShowBoite() {
-  return (
-    <>
-    <View style={styles.container}>
-        <Text>Boite + title</Text>
-        <Text>Faire une liste des livres dans la boite</Text>
-        <Button
-            title="Emprunter"
-            color="#841584"
-            />
+export default function ShowBoite({ boxInfos }) {
+    const [listBox, setListBox] = useState({})
+    useEffect(() => {
+        (async () => {
+            let result = await getAllBooksFromIdBox(boxInfos?.id);
+            setListBox(JSON.parse(result))
+        })();
+    }, []);
 
-        <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
-        <Button
-            title="Rendre"
-            color="#841584"
-            />
-    </View>
-    </>
-  );
+    console.log(listBox)
+
+    return (
+        <>
+        <View style={styles.container}>
+            <Text>{ boxInfos.nom }</Text>
+                 <FlatList
+                    data={listBox}
+                    renderItem={({item}) => <Text>{item?.auteur}</Text>}
+                    keyExtractor={item => item?.id}
+                />
+
+            <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
+            <Button
+                title="Emprunter"
+                color="#841584"
+                />
+            <Button
+                title="Rendre"
+                color="#841584"
+                />
+        </View>
+        </>
+    );
 }
 
 const styles = StyleSheet.create({
