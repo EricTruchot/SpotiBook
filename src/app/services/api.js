@@ -1,4 +1,5 @@
 import axios from "axios";
+import { retrieveData } from "./localStorageUsers";
 
 export async function getUserById(id) {
     const result = await axios.get("https://spoti-book-rest.vercel.app/users/" + id)
@@ -15,6 +16,24 @@ export async function getAllBoxes() {
     return JSON.stringify(result.data);
 }
 
+export async function getBookById(id) {
+    console.log('id: ', id);
+    const result = await axios.get("https://spoti-book-rest.vercel.app/livres/" + id)
+    console.log('result:', result);
+    return JSON.stringify(result.data);
+}
+
+export async function borrowBook(id) {
+    console.log('id: ', id);
+    const user = retrieveData(isLoggedIn)
+    console.log('user: ', user);
+
+    axios.patch("https://spoti-book-rest.vercel.app/livres/" + id, {
+        etat: 'user/' + user?.id,
+    })
+
+    return 'ok qsdgoihsd';
+}
 // les données dans états sont = nom de la table + / + nom de l'id
 // si c'est un user, ce sera : user/id (l'id qui est un guid)
 // si c'est une boite = boite/1 (d'ou le filter)

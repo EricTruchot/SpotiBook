@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import AccueilRegistered from "./src/app/accueil/AccueilRegistered";
 import ShowBoite from './src/app/boite/ShowBoite';
-
+import QRCode from './src/app/services/qrcode';
 
 
 export default function App() {
@@ -44,6 +44,10 @@ export default function App() {
             <Stack.Screen name="Boites">
                 {() => <ShowBoite boxInfos={ boxInfos } />}
               </Stack.Screen>
+              <Stack.Screen name="QRCode">
+                {() => <QRCode />}
+              </Stack.Screen>
+
         </Stack.Navigator>
       </NavigationContainer>
     );

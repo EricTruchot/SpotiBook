@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
 import { getAllBooksFromIdBox } from '../services/api';
+import { useNavigation } from '@react-navigation/native';
 
 export default function ShowBoite({ boxInfos }) {
     const [listBox, setListBox] = useState({})
+    const navigation = useNavigation();
+    
+    const navigateToScreen = () => {
+        navigation.navigate('QRCode');
+    };
+
     useEffect(() => {
         (async () => {
             let result = await getAllBooksFromIdBox(boxInfos?.id);
@@ -25,6 +32,7 @@ export default function ShowBoite({ boxInfos }) {
             <Button
                 title="Emprunter"
                 color="#841584"
+                onPress={ navigateToScreen }
                 />
             <Button
                 title="Rendre"
