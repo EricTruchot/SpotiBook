@@ -11,8 +11,6 @@ export default function ShowBoite({ boxInfos }) {
         })();
     }, []);
 
-    console.log(listBox)
-
     return (
         <>
         <View style={styles.container}>

@@ -40,7 +40,6 @@ export default function App() {
             component={ Home }
             options={{ headerShown: false }}
           />
-            {/* <Stack.Screen name="Boites" component={ ShowBoite } /> */}
 
             <Stack.Screen name="Boites">
                 {() => <ShowBoite boxInfos={ boxInfos } />}
