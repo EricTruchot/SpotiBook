@@ -8,6 +8,7 @@ export const storeData = async (key, value) => {
   // Récupérer une valeur
   export const retrieveData = async (key) => {
       const value = await AsyncStorage.getItem(key);
+      return value;
   };
 
   // Supprimer une valeur

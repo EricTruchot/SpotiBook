@@ -6,12 +6,13 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
 import AccueilRegistered from "./src/app/accueil/AccueilRegistered";
 import ShowBoite from './src/app/boite/ShowBoite';
-
+import QRCode from './src/app/services/qrcode';
 
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [boxInfos, setBoxInfos] = useState({});
+  const [listBox, setListBox] = useState({})
   
   function Home() {
     const Tab = createBottomTabNavigator();
@@ -40,11 +41,14 @@ export default function App() {
             component={ Home }
             options={{ headerShown: false }}
           />
-            {/* <Stack.Screen name="Boites" component={ ShowBoite } /> */}
 
             <Stack.Screen name="Boites">
-                {() => <ShowBoite boxInfos={ boxInfos } />}
+                {() => <ShowBoite boxInfos={ boxInfos } setBoxInfos={ setBoxInfos } listBox={ listBox } setListBox={ setListBox } />}
               </Stack.Screen>
+              <Stack.Screen name="QRCode">
+                {() => <QRCode setListBox={ setListBox } />}
+              </Stack.Screen>
+
         </Stack.Navigator>
       </NavigationContainer>
     );

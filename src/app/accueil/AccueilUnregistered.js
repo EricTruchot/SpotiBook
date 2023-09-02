@@ -24,7 +24,7 @@ export default function AccueilUnregistered({ setLoggedIn }) {
         let result = await getUserById(data?.split('/')[1]);
         let parsedResult = JSON.parse(result)
 
-        storeData('isLoggedIn', parsedResult?.prenom);
+        storeData('isLoggedIn', JSON.stringify(parsedResult));
         setLoggedIn(true);
       })();
   
