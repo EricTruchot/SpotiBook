@@ -12,6 +12,7 @@ import QRCode from './src/app/services/qrcode';
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [boxInfos, setBoxInfos] = useState({});
+  const [listBox, setListBox] = useState({})
   
   function Home() {
     const Tab = createBottomTabNavigator();
@@ -42,10 +43,10 @@ export default function App() {
           />
 
             <Stack.Screen name="Boites">
-                {() => <ShowBoite boxInfos={ boxInfos } />}
+                {() => <ShowBoite boxInfos={ boxInfos } setBoxInfos={ setBoxInfos } listBox={ listBox } setListBox={ setListBox } />}
               </Stack.Screen>
               <Stack.Screen name="QRCode">
-                {() => <QRCode />}
+                {() => <QRCode setListBox={ setListBox } />}
               </Stack.Screen>
 
         </Stack.Navigator>

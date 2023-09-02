@@ -1,29 +1,39 @@
 import React, { useState } from 'react';
-import { Text, View, Button } from 'react-native';
+import { Text, View } from 'react-native';
 import { StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
-import { borrowBook, getBookById } from '../services/api';
+import { useRoute } from '@react-navigation/native';
+import { borrowBook, getBookById, returnBook } from '../services/api';
 
-export default function QRCode() {
+export default function QRCode({ setListBox }) {
+  const [scanned, setScanned] = useState(false);
+  const navigation = useNavigation();
 
-    const navigation = useNavigation();
-    const [scanned, setScanned] = useState(false);
-    const navigateToScreen = () => {
-        navigation.goBack()
+  const route = useRoute();
+  const { state, idBox } = route.params;
+
+    const navigateToScreen = async () => {
+      navigation.goBack();
     };
     
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         ( async () => {
           let result = await getBookById(data?.split('/')[1]);
-          console.log('result: ', result);
-          let parse = JSON.parse(result)
-          console.log('resultId: ', parse.id);
-          borrowBook(parse.id)
-          console.log('C OK');
-        //CHECK RETOUR NAVIGATE
-        navigateToScreen()
+          let parse = JSON.parse(result);
+          if (state == 'borrow') {
+            const updatedList = await borrowBook(parse.id, idBox);
+            const parsedList = JSON.parse(updatedList);
+
+            setListBox(parsedList);
+          } else if (state == 'return') {
+            const updatedList = await returnBook(parse.id, idBox);
+            const parsedList = JSON.parse(updatedList);
+
+            setListBox(parsedList);
+          }
+          navigateToScreen();
         })();
     
       };
@@ -32,13 +42,10 @@ export default function QRCode() {
     <View style={styles.container}>
         <Text>QR CODE</Text>
 
-
-            <BarCodeScanner
-                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-                style={{ height: 400, width: 400 }}
-                />
-
-
+        <BarCodeScanner
+            onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+            style={{ height: 400, width: 400 }}
+            />
     </View>
     </>
   );

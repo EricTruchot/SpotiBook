@@ -3,13 +3,8 @@ import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
 import { getAllBooksFromIdBox } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ShowBoite({ boxInfos }) {
-    const [listBox, setListBox] = useState({})
+export default function ShowBoite({ boxInfos, listBox, setListBox }) {
     const navigation = useNavigation();
-    
-    const navigateToScreen = () => {
-        navigation.navigate('QRCode');
-    };
 
     useEffect(() => {
         (async () => {
@@ -24,7 +19,12 @@ export default function ShowBoite({ boxInfos }) {
             <Text>{ boxInfos.nom }</Text>
                  <FlatList
                     data={listBox}
-                    renderItem={({item}) => <Text>{item?.auteur}</Text>}
+                    renderItem={({item}) =>  
+                    <>
+                        <Text>{item?.auteur}</Text>
+                        <Text>{item?.nom}</Text>
+                    </>
+                }
                     keyExtractor={item => item?.id}
                 />
 
@@ -32,11 +32,12 @@ export default function ShowBoite({ boxInfos }) {
             <Button
                 title="Emprunter"
                 color="#841584"
-                onPress={ navigateToScreen }
+                onPress={() => navigation.navigate('QRCode', { state: 'borrow', idBox: boxInfos?.id }) }
                 />
             <Button
                 title="Rendre"
                 color="#841584"
+                onPress={() => navigation.navigate('QRCode', { state: 'return', idBox: boxInfos?.id }) }
                 />
         </View>
         </>

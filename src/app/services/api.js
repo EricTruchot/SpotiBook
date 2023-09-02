@@ -21,25 +21,24 @@ export async function getBookById(id) {
     return JSON.stringify(result.data);
 }
 
-export async function borrowBook(id) {
+export async function borrowBook(id, idBox) {
     const user = await retrieveData('isLoggedIn')
     const parsedUser = JSON.parse(user)
-    axios.patch("https://spoti-book-rest-eta.vercel.app/livres/" + id, {
+    await axios.patch("https://spoti-book-rest-eta.vercel.app/livres/" + id, {
         etat: 'user/' + parsedUser?.id,
     })
 
-    return 'borrow done';
+    const box = await getAllBooksFromIdBox(idBox)
+    return box;
 }
 
-export async function returnBook(id) {
-    const user = await retrieveData('isLoggedIn')
-    console.log('user: ', user);
-    const parsedUser = JSON.parse(user)
-    axios.patch("https://spoti-book-rest-eta.vercel.app/livres/" + id, {
-        etat: 'user/' + parsedUser?.id,
+export async function returnBook(bookId, idBox) {
+    await axios.patch("https://spoti-book-rest-eta.vercel.app/livres/" + bookId, {
+        etat: 'boite/' + idBox,
     })
-
-    return 'borrow done';
+    
+    const box = await getAllBooksFromIdBox(idBox)
+    return box;
 }
 // les données dans états sont = nom de la table + / + nom de l'id
 // si c'est un user, ce sera : user/id (l'id qui est un guid)
