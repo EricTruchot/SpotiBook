@@ -17,9 +17,12 @@ export default function QRCode() {
         setScanned(true);
         ( async () => {
           let result = await getBookById(data?.split('/')[1]);
-          borrowBook(result?.data?.id)
+          console.log('result: ', result);
+          let parse = JSON.parse(result)
+          console.log('resultId: ', parse.id);
+          borrowBook(parse.id)
           console.log('C OK');
-        //TODO MODIF BDD, CHECK RETOUR NAVIGATE
+        //CHECK RETOUR NAVIGATE
         navigateToScreen()
         })();
     
