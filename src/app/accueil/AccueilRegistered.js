@@ -44,16 +44,13 @@ export default function AccueilRegistered({ setBoxInfos }) {
   return (
     <>
     <View style={styles.container}>
-        <Text>Bienvenue {userInfo?.prenom} {userInfo?.nom}</Text>
+        <Text style={styles.welcome}>Bienvenue {userInfo?.prenom} {userInfo?.nom}</Text>
 
-        <Text>Vous pouvez maintenant scanner la boite dans laquelle vous voulez emprunter ou rendre un livre ou simplement parcourir l'application.</Text>
-        {!showCodeBar && (
-            <Button title="Scanner la boite" onPress={() => setShowCodeBar(true) } />
-        )}
-
+        <Text style={styles.scanbox}>Vous pouvez maintenant scanner la boite dans laquelle vous voulez emprunter ou rendre un livre ou simplement parcourir l'application.</Text>
+       
         {/* A metre en rouge & + gros */}
         {error && (
-            <Text>{error}</Text>
+            <Text style={styles.error}>{error}</Text>
         )}
 
         { showCodeBar && (
@@ -62,6 +59,11 @@ export default function AccueilRegistered({ setBoxInfos }) {
                 style={{ height: 400, width: 400 }}
                 />
         ) }
+        {!showCodeBar ? (
+            <Button title="Scanner la boite" onPress={() => setShowCodeBar(true) } />
+        ) : (
+            <Button title="Annuler" onPress={() => setShowCodeBar(false) } />
+        )}
     </View>
     </>
   );
@@ -70,7 +72,29 @@ export default function AccueilRegistered({ setBoxInfos }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
+        justifyContent: 'space-even',
         alignItems: 'center'
     },
+ 
+        welcome: {
+          fontSize:20,
+          textAlign:'center',
+          marginVertical:16
+        },
+
+        scanbox: {
+          width:'90%',
+          fontSize:14,
+          textAlign:'center',
+          marginBottom:0,
+        },
+        error: {
+            width:'90%',
+            fontSize:22,
+            textAlign:'center',
+            marginBottom:10,
+            color: 'red',
+            fontWeight: '600'
+          }
+
 })

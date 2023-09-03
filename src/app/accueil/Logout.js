@@ -12,7 +12,7 @@ export default function Logout({ setIsLoggedIn }) {
 
   return (
     <View style={styles.container}>
-      <Text>Voulez vous vraiment vous déconnecter?</Text>
+      <Text style={styles.text}>Voulez vous vraiment vous déconnecter?</Text>
       <Button title="Se déconnecter" onPress={ handleLogout } />
     </View>
   );
@@ -23,4 +23,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
+    text: {
+      textAlign:'center',
+      width:'90%',
+      marginVertical: 60
+  },
 })
