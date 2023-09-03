@@ -14,6 +14,6 @@ export default function MapPage({ setBoxInfos, isLoggedIn }) {
 
 
     return (
-        <Map markers={ markers } setBoxInfos={ setBoxInfos } isLoggedIn={ isLoggedIn } />
+        <Map markers={ markers } setBoxInfos={ setBoxInfos } />
     );
 };

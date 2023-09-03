@@ -3,7 +3,7 @@ import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
 import { getAllBooksFromIdBox } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ShowBoite({ boxInfos, listBox, setListBox }) {
+export default function ShowBoite({ boxInfos, listBox, setListBox, isLoggedIn }) {
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -28,16 +28,24 @@ export default function ShowBoite({ boxInfos, listBox, setListBox }) {
                 />
 
             <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
-            <Button
-                title="Emprunter"
-                color="#841584"
-                onPress={() => navigation.navigate('QRCode', { state: 'borrow', idBox: boxInfos?.id }) }
-                />
-            <Button
-                title="Rendre"
-                color="#841584"
-                onPress={() => navigation.navigate('QRCode', { state: 'return', idBox: boxInfos?.id }) }
-                />
+
+            { isLoggedIn ? (
+                <>
+                    <Button
+                        title="Emprunter"
+                        color="#841584"
+                        onPress={() => navigation.navigate('QRCode', { state: 'borrow', idBox: boxInfos?.id }) }
+                        />
+                    <Button
+                        title="Rendre"
+                        color="#841584"
+                        onPress={() => navigation.navigate('QRCode', { state: 'return', idBox: boxInfos?.id }) }
+                        />
+                </>
+            ) : (
+                <Text>Vous devez être connecter pour pouvoir emprunter pour rendre un livre</Text>
+            )}
+            
         </View>
     );
 }

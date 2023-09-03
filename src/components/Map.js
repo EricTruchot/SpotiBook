@@ -4,7 +4,7 @@ import MapView, { Marker } from 'react-native-maps';
 import { useNavigation } from '@react-navigation/native';
 import { getBoxById } from "../app/services/api";
 
-export default function Map({ markers, setBoxInfos, isLoggedIn }) {
+export default function Map({ markers, setBoxInfos }) {
   const [latitude, setLatitude] = useState(43.52252062905719);
   const [longitude, setLongitude] = useState(5.449523280048378);
 
@@ -40,7 +40,7 @@ export default function Map({ markers, setBoxInfos, isLoggedIn }) {
               key={marker?.id}
               coordinate={{latitude: marker?.latitude, longitude: marker?.longitude}}
               title={marker?.nom}
-              onPress={() => isLoggedIn && (navigateToScreen(marker?.id)) }
+              onPress={() => navigateToScreen(marker?.id) }
             />
         ))}
         

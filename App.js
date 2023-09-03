@@ -60,7 +60,7 @@ export default function App() {
           />
 
             <Stack.Screen name="Boites">
-                {() => <ShowBoite boxInfos={ boxInfos } setBoxInfos={ setBoxInfos } listBox={ listBox } setListBox={ setListBox } />}
+                {() => <ShowBoite boxInfos={ boxInfos } setBoxInfos={ setBoxInfos } listBox={ listBox } setListBox={ setListBox } isLoggedIn={ isLoggedIn } />}
               </Stack.Screen>
               <Stack.Screen name="QRCode">
                 {() => <QRCode setListBox={ setListBox } />}
