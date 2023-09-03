@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
+import { Text, View, Button, StyleSheet, FlatList, Image } from 'react-native';
 import { getAllBooksFromIdBox } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
 
 export default function ShowBoite({ boxInfos, listBox, setListBox, isLoggedIn }) {
     const navigation = useNavigation();
-
     useEffect(() => {
         (async () => {
             let result = await getAllBooksFromIdBox(boxInfos?.id);
@@ -23,7 +22,12 @@ export default function ShowBoite({ boxInfos, listBox, setListBox, isLoggedIn })
                     data={listBox}
                     renderItem={({item}) =>  
                     <>
+                      <Image
+                        source={{ uri: item?.image }}
+                        style={{ width: 190, height: 265 }}
+                    />
                     <View>
+                        <Text>image: {item?.image}</Text>
                         <Text>Titre: {item?.nom} de </Text>
                         <Text>Auteur: {item?.auteur}</Text>
                         <Text>Description: {item?.résumé}</Text>
@@ -36,7 +40,6 @@ export default function ShowBoite({ boxInfos, listBox, setListBox, isLoggedIn })
             ) : (
                 <Text>Il n'y a aucun livre dans cette boite actuellement.</Text>
             )}
-            
                  
 
             { isLoggedIn ? (
