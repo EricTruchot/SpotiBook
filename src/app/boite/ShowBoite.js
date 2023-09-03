@@ -16,31 +16,44 @@ export default function ShowBoite({ boxInfos, listBox, setListBox, isLoggedIn })
     return (
         <View style={styles.container}>
             <Text>{ boxInfos?.nom }</Text>
-                 <FlatList
+            { listBox && listBox.length != 0 ? (
+                <>
+                <Text>Voici la liste des livre disponible dans cette boite:</Text>
+                    <FlatList
                     data={listBox}
                     renderItem={({item}) =>  
                     <>
-                        <Text>{item?.auteur}</Text>
-                        <Text>{item?.nom}</Text>
+                    <View>
+                        <Text>Titre: {item?.nom} de </Text>
+                        <Text>Auteur: {item?.auteur}</Text>
+                        <Text>Description: {item?.résumé}</Text>
+                    </View>
                     </>
                 }
                     keyExtractor={item => item?.id}
                 />
-
-            <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
+                </>
+            ) : (
+                <Text>Il n'y a aucun livre dans cette boite actuellement.</Text>
+            )}
+            
+                 
 
             { isLoggedIn ? (
                 <>
+                { !listBox && (
                     <Button
-                        title="Emprunter"
+                        title="Emprunter un livre"
                         color="#841584"
                         onPress={() => navigation.navigate('QRCode', { state: 'borrow', idBox: boxInfos?.id }) }
                         />
+                )}
                     <Button
-                        title="Rendre"
+                        title="Rendre un livre"
                         color="#841584"
                         onPress={() => navigation.navigate('QRCode', { state: 'return', idBox: boxInfos?.id }) }
                         />
+                       
                 </>
             ) : (
                 <Text>Vous devez être connecter pour pouvoir emprunter pour rendre un livre</Text>

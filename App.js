@@ -23,7 +23,7 @@ export default function App() {
       <Tab.Navigator>
         {/* Tab Navigator = barre du bas (avec les boutons) */}
             { isLoggedIn ? (
-              <Tab.Screen name="AccueilRegistered">
+              <Tab.Screen name="Accueil">
                 {() => <AccueilRegistered setBoxInfos={ setBoxInfos } />}
               </Tab.Screen>
             ) : (

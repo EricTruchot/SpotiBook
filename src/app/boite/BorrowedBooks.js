@@ -21,15 +21,14 @@ export default function BorrowedBook() {
 
     return (
         <View style={styles.container}>
-            <Text>Informations de { userInfo?.prenom }</Text>
+            <Text>Voici la liste des livres que vous avez emprunter actuellement { userInfo?.prenom }:</Text>
 
             { listBox && listBox.length != 0 ? (
                 <FlatList
                     data={listBox}
                     renderItem={({item}) =>  
                     <>
-                        <Text>{item?.auteur}</Text>
-                        <Text>{item?.nom}</Text>
+                        <Text>{item?.nom} de {item?.auteur}</Text>
                     </>
                 }
                     keyExtractor={item => item?.id}

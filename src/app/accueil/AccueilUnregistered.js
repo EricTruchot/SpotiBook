@@ -41,8 +41,9 @@ export default function AccueilUnregistered({ setLoggedIn }) {
   return (
     <>
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>Page d'accueil</Text>
-
+      <Text>SpotiBook</Text>
+      <Text>Avec SpotiBook, vous pouvez désormais découvrir et partager des livres passionnants dans des boîtes de livres mises à disposition en toute simplicité.</Text>
+      <Text>Veuillez scanner votre QR Code d'utilisateur pour commencer:</Text>
     {/* A metre en rouge & + gros */}
       { error && (
         <Text>{error}</Text>

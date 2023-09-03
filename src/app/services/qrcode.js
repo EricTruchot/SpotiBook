@@ -59,7 +59,11 @@ export default function QRCode({ setListBox }) {
   return (
     <>
     <View style={styles.container}>
-        <Text>QR CODE</Text>
+        {state == 'borrow' ? (
+        <Text>Veuillez scanner le livre que vous voulez emprunter.</Text>
+        ): (
+          <Text>Veuillez scanner le livre que vous voulez rendre.</Text>
+        )}
 
         {/* A metre en rouge & + gros */}
         {error && (

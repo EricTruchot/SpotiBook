@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Button } from 'react-native';
+import { View, Button, Text } from 'react-native';
 import { removeData } from '../services/localStorageUsers';
 import { StyleSheet } from "react-native";
 
@@ -12,6 +12,7 @@ export default function Logout({ setIsLoggedIn }) {
 
   return (
     <View style={styles.container}>
+      <Text>Voulez vous vraiment vous déconnecter?</Text>
       <Button title="Se déconnecter" onPress={ handleLogout } />
     </View>
   );

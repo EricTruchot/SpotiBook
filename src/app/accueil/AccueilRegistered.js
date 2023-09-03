@@ -1,14 +1,24 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Text, View, Button } from 'react-native';
 import { StyleSheet } from "react-native";
 import { useNavigation } from '@react-navigation/native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 import { getBoxById } from '../services/api';
+import { retrieveData } from '../services/localStorageUsers';
 
 export default function AccueilRegistered({ setBoxInfos }) {
     const [scanned, setScanned] = useState(false);
     const [showCodeBar, setShowCodeBar] = useState(false);
     const [error, setError] = useState('');
+    const [userInfo, setuserInfo] = useState({});
+
+      useEffect(() => {
+        (async () => {
+            const user = await retrieveData('isLoggedIn')
+            const parsedUser = JSON.parse(user);
+        setuserInfo(parsedUser);
+        })();
+    }, []);
 
     const navigation = useNavigation();
 
@@ -34,9 +44,9 @@ export default function AccueilRegistered({ setBoxInfos }) {
   return (
     <>
     <View style={styles.container}>
-        <Text>Text quand on est connecté</Text>
+        <Text>Bienvenue {userInfo?.prenom} {userInfo?.nom}</Text>
 
-        <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
+        <Text>Vous pouvez maintenant scanner la boite dans laquelle vous voulez emprunter ou rendre un livre ou simplement parcourir l'application.</Text>
         {!showCodeBar && (
             <Button title="Scanner la boite" onPress={() => setShowCodeBar(true) } />
         )}
