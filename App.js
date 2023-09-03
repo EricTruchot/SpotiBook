@@ -8,6 +8,7 @@ import AccueilRegistered from "./src/app/accueil/AccueilRegistered";
 import ShowBoite from './src/app/boite/ShowBoite';
 import QRCode from './src/app/services/qrcode';
 import BorrowedBook from './src/app/boite/BorrowedBooks';
+import Logout from './src/app/accueil/Logout';
 
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
   
   function Home() {
     const Tab = createBottomTabNavigator();
+    
     return (
       <Tab.Navigator>
         {/* Tab Navigator = barre du bas (avec les boutons) */}
@@ -33,9 +35,14 @@ export default function App() {
               {() => <Map setBoxInfos={ setBoxInfos } isLoggedIn={ isLoggedIn } />}
             </Tab.Screen>
             { isLoggedIn && (
-              <Tab.Screen name="Livres Empruntés">
-                {() => <BorrowedBook />}
-              </Tab.Screen>
+              <>
+                <Tab.Screen name="Livres Empruntés">
+                  {() => <BorrowedBook />}
+                </Tab.Screen>
+                <Tab.Screen name="Se déconnecter">
+                  {() => <Logout setIsLoggedIn={ setIsLoggedIn } /> }
+                </Tab.Screen>
+              </>
             )}
       </Tab.Navigator>
     );

@@ -44,15 +44,15 @@ export default function AccueilUnregistered({ setLoggedIn }) {
       <Text>Page d'accueil</Text>
 
     {/* A metre en rouge & + gros */}
-      {error && (
+      { error && (
         <Text>{error}</Text>
       )}
 
-      {!showQrCode && (
+       {!showQrCode && (
         <Button title="Se connecter" onPress={() => setShowQrCode(true) } />
       )}
 
-        {showQrCode && (
+        { showQrCode && (
           <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={{ height: 400, width: 400 }}
