@@ -16,7 +16,7 @@ export default function ShowBoite({ boxInfos, listBox, setListBox }) {
     return (
         <>
         <View style={styles.container}>
-            <Text>{ boxInfos.nom }</Text>
+            <Text>{ boxInfos?.nom }</Text>
                  <FlatList
                     data={listBox}
                     renderItem={({item}) =>  

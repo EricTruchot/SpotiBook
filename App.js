@@ -24,10 +24,12 @@ export default function App() {
               </Tab.Screen>
             ) : (
                 <Tab.Screen name="Accueil">
-                    {() => <AccueilUnregistered setLoggedIn={ setIsLoggedIn } />}
+                  {() => <AccueilUnregistered setLoggedIn={ setIsLoggedIn } />}
                 </Tab.Screen>
             )}
-            <Tab.Screen name="Carte" component={ Map } />
+            <Tab.Screen name="Carte">
+              {() => <Map setBoxInfos={ setBoxInfos } />}
+            </Tab.Screen>
       </Tab.Navigator>
     );
   }

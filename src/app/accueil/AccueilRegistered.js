@@ -28,7 +28,6 @@ export default function AccueilRegistered({ setBoxInfos }) {
     <>
     <View style={styles.container}>
         <Text>Text quand on est connecté</Text>
-        <Button title="Voir la carte" color="#841584" />
 
         <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
         {/* <Button title="Scanner la boite" onPress={ navigateToScreen } /> */}
