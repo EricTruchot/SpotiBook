@@ -7,6 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AccueilRegistered from "./src/app/accueil/AccueilRegistered";
 import ShowBoite from './src/app/boite/ShowBoite';
 import QRCode from './src/app/services/qrcode';
+import BorrowedBook from './src/app/boite/BorrowedBooks';
 
 
 export default function App() {
@@ -18,6 +19,7 @@ export default function App() {
     const Tab = createBottomTabNavigator();
     return (
       <Tab.Navigator>
+        {/* Tab Navigator = barre du bas (avec les boutons) */}
             { isLoggedIn ? (
               <Tab.Screen name="AccueilRegistered">
                 {() => <AccueilRegistered setBoxInfos={ setBoxInfos } />}
@@ -28,8 +30,13 @@ export default function App() {
                 </Tab.Screen>
             )}
             <Tab.Screen name="Carte">
-              {() => <Map setBoxInfos={ setBoxInfos } />}
+              {() => <Map setBoxInfos={ setBoxInfos } isLoggedIn={ isLoggedIn } />}
             </Tab.Screen>
+            { isLoggedIn && (
+              <Tab.Screen name="Livres Empruntés">
+                {() => <BorrowedBook />}
+              </Tab.Screen>
+            )}
       </Tab.Navigator>
     );
   }
@@ -37,6 +44,7 @@ export default function App() {
 
     return (
       <NavigationContainer>
+        {/* Stacks Screen = les routes (a appeler par example "Boites" pour aller sur ShowBoite) */}
         <Stack.Navigator>
           <Stack.Screen
             name="Home"

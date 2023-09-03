@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button } from 'react-native';
 import { StyleSheet } from "react-native";
-import { storeData, removeData } from '../services/localStorageUsers.js';
-import { getAllBooksFromIdBox, getUserById } from '../services/api.js';
+import { storeData } from '../services/localStorageUsers.js';
+import { getUserById } from '../services/api.js';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
 export default function AccueilUnregistered({ setLoggedIn }) {

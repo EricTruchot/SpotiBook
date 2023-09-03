@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Map from '../../components/Map';
 import { getAllBoxes } from '../services/api.js';
 
-export default function MapPage({ setBoxInfos }) {
+export default function MapPage({ setBoxInfos, isLoggedIn }) {
     const [markers, setMarkers] = useState({});
 
     useEffect(() => {
@@ -14,6 +14,6 @@ export default function MapPage({ setBoxInfos }) {
 
 
     return (
-        <Map markers={ markers } setBoxInfos={setBoxInfos} />
+        <Map markers={ markers } setBoxInfos={ setBoxInfos } isLoggedIn={ isLoggedIn } />
     );
 };

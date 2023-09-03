@@ -1,22 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
-import { getAllBooksFromIdBox } from '../services/api';
+import { retrieveData } from '../services/localStorageUsers.js';
 import { useNavigation } from '@react-navigation/native';
+import { getBookByUser } from '../services/api.js';
 
-export default function ShowBoite({ boxInfos, listBox, setListBox }) {
+export default function BorrowedBook() {
+    const [userInfo, setUserInfo] = useState({})
+    const [listBox, setListBox] = useState({})
     const navigation = useNavigation();
 
     useEffect(() => {
         (async () => {
-            let result = await getAllBooksFromIdBox(boxInfos?.id);
+            const user = await retrieveData('isLoggedIn');
+            const parsedUser = JSON.parse(user);
+            setUserInfo(parsedUser);
+            let result = await getBookByUser(parsedUser?.id);
             setListBox(JSON.parse(result))
         })();
     }, []);
 
     return (
         <View style={styles.container}>
-            <Text>{ boxInfos?.nom }</Text>
-                 <FlatList
+            <Text>Informations de { userInfo?.prenom }</Text>
+
+            { listBox && listBox.length != 0 ? (
+                <FlatList
                     data={listBox}
                     renderItem={({item}) =>  
                     <>
@@ -26,18 +34,11 @@ export default function ShowBoite({ boxInfos, listBox, setListBox }) {
                 }
                     keyExtractor={item => item?.id}
                 />
+            ) : (
+                <Text>Vous n'avez emprunter aucun livres.</Text>
+            )}
+                 
 
-            <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
-            <Button
-                title="Emprunter"
-                color="#841584"
-                onPress={() => navigation.navigate('QRCode', { state: 'borrow', idBox: boxInfos?.id }) }
-                />
-            <Button
-                title="Rendre"
-                color="#841584"
-                onPress={() => navigation.navigate('QRCode', { state: 'return', idBox: boxInfos?.id }) }
-                />
         </View>
     );
 }

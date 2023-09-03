@@ -35,6 +35,26 @@ export async function getBookById(id) {
     return JSON.stringify(result.data);
 }
 
+export async function getBookByUser(id) {
+    const result = await getAllBooks();
+    const parsedResult = JSON.parse(result);
+    if(!parsedResult && !parsedResult?.data) {
+        return errorMessage;
+    }
+
+    const dataArray = Object.values(parsedResult?.data);
+    const dataFiltered = dataArray?.filter(res => res?.etat.split('/')[0] === 'user' && res?.etat.split('/')[1] == id);
+    return JSON.stringify(dataFiltered);
+}
+
+export async function getAllBooks() {
+    const data = await axios.get("https://spoti-book-rest-eta.vercel.app/livres");
+    if(!data && !data?.data) {
+        return errorMessage;
+    }
+    return JSON.stringify(data);
+}
+
 export async function borrowBook(id, idBox) {
     const user = await retrieveData('isLoggedIn');
     const parsedUser = JSON.parse(user);
