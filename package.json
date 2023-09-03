@@ -34,7 +34,8 @@
     "react-native-screens": "~3.22.0",
     "react-native-web": "~0.19.6",
     "react-native-web-maps": "^0.3.0",
-    "react-scripts": "^5.0.1"
+    "react-scripts": "^5.0.1",
+    "expo-system-ui": "~2.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
