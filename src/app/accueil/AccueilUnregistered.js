@@ -40,34 +40,60 @@ export default function AccueilUnregistered({ setLoggedIn }) {
 
   return (
     <>
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text>SpotiBook</Text>
-      <Text>Avec SpotiBook, vous pouvez désormais découvrir et partager des livres passionnants dans des boîtes de livres mises à disposition en toute simplicité.</Text>
-      <Text>Veuillez scanner votre QR Code d'utilisateur pour commencer:</Text>
+    <View style={{ flex: 1, justifyContent: 'space-even', alignItems: 'center' }}>
+      <Text style={styles.spotiBook}>SpotiBook</Text>
+      <Text style={styles.scanUser}>Avec SpotiBook, vous pouvez désormais découvrir et partager des livres passionnants dans des boîtes de livres mises à disposition en toute simplicité.</Text>
+      <Text style={styles.scanUser}>Veuillez scanner votre QR Code d'utilisateur pour commencer:</Text>
     {/* A metre en rouge & + gros */}
       { error && (
-        <Text>{error}</Text>
+        <Text style={styles.error}>{error}</Text>
       )}
 
-       {!showQrCode && (
-        <Button title="Se connecter" onPress={() => setShowQrCode(true) } />
-      )}
-
+     
         { showQrCode && (
           <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
-        style={{ height: 400, width: 400 }}
+        style={{ height: 300, width: 400 ,marginBottom:20}}
         />
         )}
-      
+        {!showQrCode ? (
+        <Button title="Se connecter" onPress={() => setShowQrCode(true) } />
+      ) : (
+        <Button title="Annuler" onPress={() => setShowQrCode(false) } />
+      )}
     </View>
     </>
   );
 }
 
 const styles = StyleSheet.create({
-  map: {
-    width: '100%',
-    height: '100%',
+  // map: {
+  //   width: '100%',
+  //   height: '100%',
+  // },
+  spotiBook: {
+    fontSize:20,
+    textAlign:'center',
+    marginVertical:20
+    // marginBottom:4,
   },
+  // scanUser: {
+  //   fontSize:16,
+  //   textAlign:'center',
+  //   marginBottom:4,
+  // },
+  scanUser: {
+    width:'90%',
+    fontSize:14,
+    textAlign:'center',
+    marginBottom:10,
+  },
+  error: {
+    width:'90%',
+    fontSize:22,
+    textAlign:'center',
+    marginBottom:10,
+    color: 'red',
+    fontWeight: '600'
+  }
 })

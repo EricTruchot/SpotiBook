@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
+import { Text, View, Image, StyleSheet, FlatList } from 'react-native';
 import { retrieveData } from '../services/localStorageUsers.js';
 import { useNavigation } from '@react-navigation/native';
 import { getBookByUser } from '../services/api.js';
@@ -21,20 +21,28 @@ export default function BorrowedBook() {
 
     return (
         <View style={styles.container}>
-            <Text>Voici la liste des livres que vous avez emprunter actuellement { userInfo?.prenom }:</Text>
+           
 
             { listBox && listBox.length != 0 ? (
+            <>
+                 <Text style={styles.title}>Voici la liste des livres que vous avez emprunté actuellement { userInfo?.prenom }:</Text>
                 <FlatList
+                    
                     data={listBox}
                     renderItem={({item}) =>  
-                    <>
+                    <View style={styles.card}>
+                         <Image
+                        source={{ uri: item?.image }}
+                        style={{ width: 190, height: 265 }}
+                    />
                         <Text>{item?.nom} de {item?.auteur}</Text>
-                    </>
+                    </View>
                 }
                     keyExtractor={item => item?.id}
                 />
+            </>
             ) : (
-                <Text>Vous n'avez emprunter aucun livres.</Text>
+                <Text>Vous n'avez emprunté aucun livres.</Text>
             )}
                  
 
@@ -48,8 +56,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    map: {
-        width: '100%',
-        height: '100%',
+    card: {
+        flex: 1,
+        padding:8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        // width: '90%',
+        borderStyle:'solid',
+        borderWidth:1,
+        borderColor:'#242331',
+        marginVertical:5
+        
     },
+    title: {
+        marginVertical:20,
+        fontWeight:'600'
+    }
 })
