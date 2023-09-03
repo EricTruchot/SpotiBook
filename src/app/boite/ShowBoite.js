@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Button, StyleSheet, FlatList } from 'react-native';
+import { Text, View, Button, StyleSheet, FlatList, Image } from 'react-native';
 import { getAllBooksFromIdBox } from '../services/api';
 import { useNavigation } from '@react-navigation/native';
 
-export default function ShowBoite({ boxInfos, listBox, setListBox }) {
+export default function ShowBoite({ boxInfos, listBox, setListBox, isLoggedIn }) {
     const navigation = useNavigation();
-
     useEffect(() => {
         (async () => {
             let result = await getAllBooksFromIdBox(boxInfos?.id);
@@ -14,33 +13,56 @@ export default function ShowBoite({ boxInfos, listBox, setListBox }) {
     }, []);
 
     return (
-        <>
         <View style={styles.container}>
-            <Text>{ boxInfos.nom }</Text>
-                 <FlatList
+            <Text>{ boxInfos?.nom }</Text>
+            { listBox && listBox.length != 0 ? (
+                <>
+                <Text>Voici la liste des livre disponible dans cette boite:</Text>
+                    <FlatList
                     data={listBox}
                     renderItem={({item}) =>  
                     <>
-                        <Text>{item?.auteur}</Text>
-                        <Text>{item?.nom}</Text>
+                      <Image
+                        source={{ uri: item?.image }}
+                        style={{ width: 190, height: 265 }}
+                    />
+                    <View>
+                        <Text>image: {item?.image}</Text>
+                        <Text>Titre: {item?.nom} de </Text>
+                        <Text>Auteur: {item?.auteur}</Text>
+                        <Text>Description: {item?.résumé}</Text>
+                    </View>
                     </>
                 }
                     keyExtractor={item => item?.id}
                 />
+                </>
+            ) : (
+                <Text>Il n'y a aucun livre dans cette boite actuellement.</Text>
+            )}
+                 
 
-            <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
-            <Button
-                title="Emprunter"
-                color="#841584"
-                onPress={() => navigation.navigate('QRCode', { state: 'borrow', idBox: boxInfos?.id }) }
-                />
-            <Button
-                title="Rendre"
-                color="#841584"
-                onPress={() => navigation.navigate('QRCode', { state: 'return', idBox: boxInfos?.id }) }
-                />
+            { isLoggedIn ? (
+                <>
+                { !listBox && (
+                    <Button
+                        title="Emprunter un livre"
+                        color="#841584"
+                        onPress={() => navigation.navigate('QRCode', { state: 'borrow', idBox: boxInfos?.id }) }
+                        />
+                )}
+                    <Button
+                        title="Rendre un livre"
+                        color="#841584"
+                        onPress={() => navigation.navigate('QRCode', { state: 'return', idBox: boxInfos?.id }) }
+                        />
+                       
+                </>
+            ) : (
+                <Text>Vous devez être connecter pour pouvoir emprunter pour rendre un livre</Text>
+            )}
+            
         </View>
-        </>
     );
 }
 

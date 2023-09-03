@@ -1,10 +1,21 @@
 import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet } from "react-native";
+import { Button, StyleSheet } from "react-native";
 import MapView, { Marker } from 'react-native-maps';
+import { useNavigation } from '@react-navigation/native';
+import { getBoxById } from "../app/services/api";
 
-export default function Map({ markers }) {
+export default function Map({ markers, setBoxInfos }) {
   const [latitude, setLatitude] = useState(43.52252062905719);
   const [longitude, setLongitude] = useState(5.449523280048378);
+
+  const navigation = useNavigation();
+
+  const navigateToScreen = async (id) => {
+    let result = await getBoxById(id);
+    let parsedResult = JSON.parse(result)
+    setBoxInfos(parsedResult)
+    navigation.navigate('Boites');
+  };
 
   const mapRef = useRef(null);
 
@@ -26,10 +37,11 @@ export default function Map({ markers }) {
         >
         { Object.keys(markers)?.length > 0  && markers?.map(marker => (
             <Marker
-            key={marker?.id}
-            coordinate={{latitude: marker?.latitude, longitude: marker?.longitude}}
-            title={marker?.nom}
-        />
+              key={marker?.id}
+              coordinate={{latitude: marker?.latitude, longitude: marker?.longitude}}
+              title={marker?.nom}
+              onPress={() => navigateToScreen(marker?.id) }
+            />
         ))}
         
       </MapView>

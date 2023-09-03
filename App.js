@@ -7,6 +7,8 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AccueilRegistered from "./src/app/accueil/AccueilRegistered";
 import ShowBoite from './src/app/boite/ShowBoite';
 import QRCode from './src/app/services/qrcode';
+import BorrowedBook from './src/app/boite/BorrowedBooks';
+import Logout from './src/app/accueil/Logout';
 
 
 export default function App() {
@@ -16,18 +18,32 @@ export default function App() {
   
   function Home() {
     const Tab = createBottomTabNavigator();
+    
     return (
       <Tab.Navigator>
+        {/* Tab Navigator = barre du bas (avec les boutons) */}
             { isLoggedIn ? (
-              <Tab.Screen name="AccueilRegistered">
+              <Tab.Screen name="Accueil">
                 {() => <AccueilRegistered setBoxInfos={ setBoxInfos } />}
               </Tab.Screen>
             ) : (
                 <Tab.Screen name="Accueil">
-                    {() => <AccueilUnregistered setLoggedIn={ setIsLoggedIn } />}
+                  {() => <AccueilUnregistered setLoggedIn={ setIsLoggedIn } />}
                 </Tab.Screen>
             )}
-            <Tab.Screen name="Carte" component={ Map } />
+            <Tab.Screen name="Carte">
+              {() => <Map setBoxInfos={ setBoxInfos } isLoggedIn={ isLoggedIn } />}
+            </Tab.Screen>
+            { isLoggedIn && (
+              <>
+                <Tab.Screen name="Livres Empruntés">
+                  {() => <BorrowedBook />}
+                </Tab.Screen>
+                <Tab.Screen name="Se déconnecter">
+                  {() => <Logout setIsLoggedIn={ setIsLoggedIn } /> }
+                </Tab.Screen>
+              </>
+            )}
       </Tab.Navigator>
     );
   }
@@ -35,6 +51,7 @@ export default function App() {
 
     return (
       <NavigationContainer>
+        {/* Stacks Screen = les routes (a appeler par example "Boites" pour aller sur ShowBoite) */}
         <Stack.Navigator>
           <Stack.Screen
             name="Home"
@@ -43,7 +60,7 @@ export default function App() {
           />
 
             <Stack.Screen name="Boites">
-                {() => <ShowBoite boxInfos={ boxInfos } setBoxInfos={ setBoxInfos } listBox={ listBox } setListBox={ setListBox } />}
+                {() => <ShowBoite boxInfos={ boxInfos } setBoxInfos={ setBoxInfos } listBox={ listBox } setListBox={ setListBox } isLoggedIn={ isLoggedIn } />}
               </Stack.Screen>
               <Stack.Screen name="QRCode">
                 {() => <QRCode setListBox={ setListBox } />}

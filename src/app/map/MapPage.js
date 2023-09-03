@@ -2,21 +2,18 @@ import React, { useEffect, useState } from 'react';
 import Map from '../../components/Map';
 import { getAllBoxes } from '../services/api.js';
 
-export default function MapPage() {
+export default function MapPage({ setBoxInfos, isLoggedIn }) {
     const [markers, setMarkers] = useState({});
 
     useEffect(() => {
         (async () => {
-            await getBoxes();
+            const boxes = await getAllBoxes();
+            setMarkers(JSON.parse(boxes));
         })();
     }, []);
 
-    async function getBoxes() {
-        const boxes = await getAllBoxes();
-        setMarkers(JSON.parse(boxes));
-    }
 
     return (
-        <Map markers={ markers } />
+        <Map markers={ markers } setBoxInfos={ setBoxInfos } />
     );
 };

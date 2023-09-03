@@ -1,34 +1,71 @@
 import axios from "axios";
 import { retrieveData } from "./localStorageUsers";
 
+const errorMessage = "Votre QRcode n'est pas valide";
+
 export async function getUserById(id) {
-    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/users/" + id)
+    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/users/" + id);
+    if(!result && !result?.data) {
+        return errorMessage;
+    }
     return JSON.stringify(result.data);
 }
 
 export async function getBoxById(id) {
-    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/boites/" + id)
+    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/boites/" + id);
+    if(!result && !result?.data) {
+        return errorMessage;
+    }
     return JSON.stringify(result.data);
 }
 
 export async function getAllBoxes() {
-    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/boites")
+    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/boites");
+    if(!result && !result?.data) {
+        return errorMessage;
+    }
     return JSON.stringify(result.data);
 }
 
 export async function getBookById(id) {
-    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/livres/" + id)
+    const result = await axios.get("https://spoti-book-rest-eta.vercel.app/livres/" + id);
+    if(!result && !result?.data) {
+        return errorMessage;
+    }
     return JSON.stringify(result.data);
 }
 
+export async function getBookByUser(id) {
+    const result = await getAllBooks();
+    const parsedResult = JSON.parse(result);
+    if(!parsedResult && !parsedResult?.data) {
+        return errorMessage;
+    }
+
+    const dataArray = Object.values(parsedResult?.data);
+    const dataFiltered = dataArray?.filter(res => res?.etat.split('/')[0] === 'user' && res?.etat.split('/')[1] == id);
+    return JSON.stringify(dataFiltered);
+}
+
+export async function getAllBooks() {
+    const data = await axios.get("https://spoti-book-rest-eta.vercel.app/livres");
+    if(!data && !data?.data) {
+        return errorMessage;
+    }
+    return JSON.stringify(data);
+}
+
 export async function borrowBook(id, idBox) {
-    const user = await retrieveData('isLoggedIn')
-    const parsedUser = JSON.parse(user)
+    const user = await retrieveData('isLoggedIn');
+    const parsedUser = JSON.parse(user);
     await axios.patch("https://spoti-book-rest-eta.vercel.app/livres/" + id, {
         etat: 'user/' + parsedUser?.id,
-    })
+    });
 
-    const box = await getAllBooksFromIdBox(idBox)
+    const box = await getAllBooksFromIdBox(idBox);
+    if(!box && !box?.data) {
+        return errorMessage;
+    }
     return box;
 }
 
@@ -37,7 +74,10 @@ export async function returnBook(bookId, idBox) {
         etat: 'boite/' + idBox,
     })
     
-    const box = await getAllBooksFromIdBox(idBox)
+    const box = await getAllBooksFromIdBox(idBox);
+    if(!box && !box?.data) {
+        return errorMessage;
+    }
     return box;
 }
 // les données dans états sont = nom de la table + / + nom de l'id
@@ -46,7 +86,10 @@ export async function returnBook(bookId, idBox) {
 // demander a eric la logique
 export async function getAllBooksFromIdBox(id) {
     const data = await axios.get("https://spoti-book-rest-eta.vercel.app/livres");
+    if(!data && !data?.data) {
+        return errorMessage;
+    }
     const dataArray = Object.values(data?.data);
-    const result2 = dataArray?.filter(res => res?.etat.split('/')[0] === 'boite' && res?.etat.split('/')[1] == id)
+    const result2 = dataArray?.filter(res => res?.etat.split('/')[0] === 'boite' && res?.etat.split('/')[1] == id);
     return JSON.stringify(result2);
 }
