@@ -8,6 +8,8 @@ import { BarCodeScanner } from 'expo-barcode-scanner';
 export default function AccueilUnregistered({ setLoggedIn }) {
   const [scanned, setScanned] = useState(false);
   const [hasPermission, setHasPermission] = useState(null);
+  const [showQrCode, setShowQrCode] = useState(false);
+  const [error, setError] = useState('');
 
     useEffect(() => {
       const getBarCodeScannerPermissions = async () => {
@@ -21,6 +23,12 @@ export default function AccueilUnregistered({ setLoggedIn }) {
     const handleBarCodeScanned = ({ type, data }) => {
       setScanned(true);
       ( async () => {
+        if (data?.split('/')[0] != 'utilisateur') {
+          setError("Vous devez scannez un QRCode d'utilisateur");
+          setScanned(false);
+          return;
+        }
+
         let result = await getUserById(data?.split('/')[1]);
         let parsedResult = JSON.parse(result)
 
@@ -35,10 +43,22 @@ export default function AccueilUnregistered({ setLoggedIn }) {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <Text>Page d'accueil</Text>
 
-      <BarCodeScanner
+    {/* A metre en rouge & + gros */}
+      {error && (
+        <Text>{error}</Text>
+      )}
+
+      {!showQrCode && (
+        <Button title="Se connecter" onPress={() => setShowQrCode(true) } />
+      )}
+
+        {showQrCode && (
+          <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={{ height: 400, width: 400 }}
         />
+        )}
+      
     </View>
     </>
   );
@@ -50,16 +70,3 @@ const styles = StyleSheet.create({
     height: '100%',
   },
 })
-
-
-
-  // useEffect(() => {
-  //   (async () => {
-  //       await getAllSpots();
-  //     })();
-  //   }, []);
-
-  //   async function getAllSpots() {
-  //       const allSpots = await getUserById("03b04b8e-1b73-4954-a4d8-fb76a6feda19");
-  //       setIdk(allSpots)
-  //   }

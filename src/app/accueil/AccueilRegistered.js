@@ -8,6 +8,8 @@ import { getBoxById } from '../services/api';
 export default function AccueilRegistered({ setBoxInfos }) {
     const [scanned, setScanned] = useState(false);
     const [showCodeBar, setShowCodeBar] = useState(false);
+    const [error, setError] = useState('');
+
     const navigation = useNavigation();
 
     const navigateToScreen = () => {
@@ -17,6 +19,11 @@ export default function AccueilRegistered({ setBoxInfos }) {
     const handleBarCodeScanned = ({ type, data }) => {
         setScanned(true);
         ( async () => {
+            if (data?.split('/')[0] != 'boite') {
+                setError("Vous devez scannez un QRCode de boite");
+                setScanned(false);
+                return;
+              }
           let result = await getBoxById(data?.split('/')[1]);
           let parsedResult = JSON.parse(result)
           setBoxInfos(parsedResult)
@@ -30,8 +37,14 @@ export default function AccueilRegistered({ setBoxInfos }) {
         <Text>Text quand on est connecté</Text>
 
         <Text>Veuillez scanner la boite dans laquelle vous voulez emprunter ou rendre un livre !</Text>
-        {/* <Button title="Scanner la boite" onPress={ navigateToScreen } /> */}
-        <Button title="Scanner la boite" onPress={() => setShowCodeBar(true) } />
+        {!showCodeBar && (
+            <Button title="Scanner la boite" onPress={() => setShowCodeBar(true) } />
+        )}
+
+        {/* A metre en rouge & + gros */}
+        {error && (
+            <Text>{error}</Text>
+        )}
 
         { showCodeBar && (
             <BarCodeScanner
@@ -39,9 +52,6 @@ export default function AccueilRegistered({ setBoxInfos }) {
                 style={{ height: 400, width: 400 }}
                 />
         ) }
-
-        <Button title="Reset" onPress={() => setScanned(false) } />
-        <Button title="Reset2" onPress={() => setShowCodeBar(false) } />
     </View>
     </>
   );
