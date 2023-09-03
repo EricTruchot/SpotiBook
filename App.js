@@ -7,8 +7,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import AccueilRegistered from "./src/app/accueil/AccueilRegistered";
 import ShowBoite from './src/app/boite/ShowBoite';
 import QRCode from './src/app/services/qrcode';
-import BorrowedBook from './src/app/boite/BorrowedBooks';
-import Logout from './src/app/accueil/Logout';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
 
 export default function App() {
@@ -20,14 +19,54 @@ export default function App() {
     const Tab = createBottomTabNavigator();
     
     return (
-      <Tab.Navigator>
-        {/* Tab Navigator = barre du bas (avec les boutons) */}
+      <Tab.Navigator 
+   
+      screenOptions={{
+        tabBarActiveTintColor: "#242331",
+        // f9a03f
+        tabBarInactiveTintColor: "grey",
+        headerTintColor: "#242331",
+        // EEF4D4
+        cardStyle: {
+           backgroundColor: '#E0F5EA',
+        },
+        headerStyle: {
+          backgroundColor: '#E0F5EA',
+          // 121619
+       },
+       tabBarStyle:{
+        backgroundColor:'#E0F5EA',
+        // 242331
+        // height:60,
+      },
+      tabBarItemStyle:{
+        backgroundColor:'#E0F5EA',
+        // marginHorizontal:5,
+        borderRadius:2,
+      },
+      tabBarLabelStyle:{
+        color:'#242331',
+      },
+      // tabBarIconStyle: {
+      //  color:'#242331',
+      //  focused:'orange'
+      // }
+     }}
+     >
             { isLoggedIn ? (
-              <Tab.Screen name="Accueil">
-                {() => <AccueilRegistered setBoxInfos={ setBoxInfos } />}
+              <Tab.Screen name="AccueilRegistered">    
+                {() => 
+                
+                <AccueilRegistered setBoxInfos={ setBoxInfos } />}
               </Tab.Screen>
             ) : (
-                <Tab.Screen name="Accueil">
+                <Tab.Screen name="Accueil"
+                options={{
+                  tabBarLabel: 'Home',
+                  tabBarIcon: ({ color, size }) => (
+                    <FontAwesome name="home" color={color} size={size} />
+                  ),
+                }}>
                   {() => <AccueilUnregistered setLoggedIn={ setIsLoggedIn } />}
                 </Tab.Screen>
             )}
@@ -51,8 +90,18 @@ export default function App() {
 
     return (
       <NavigationContainer>
-        {/* Stacks Screen = les routes (a appeler par example "Boites" pour aller sur ShowBoite) */}
-        <Stack.Navigator>
+        <Stack.Navigator
+        screenOptions={{
+          headerTintColor: "#242331",
+          // EEF4D4
+          cardStyle: {
+             backgroundColor: '#848FA5',
+          },
+          headerStyle: {
+            backgroundColor: '#ECDCB0',
+            // 121619
+         }
+       }}>
           <Stack.Screen
             name="Home"
             component={ Home }
